@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 from datetime import datetime
@@ -163,30 +162,31 @@ with c2:
 
 if st.button("Salva alimento in dispensa"):
     if nuovo_nome:
-        controllo_esiste = 
-            nuovo_cibo = pd.DataFrame([{
-                "Utente": st.session_state.utente,
-if st.button("Salva alimento in dispensa"):                             
-if nuovo_nome:                                               
-# Controllo di sicurezza per non far crashare l'app
-if 'Nome' in df_alimenti_tutti.columns and 'Utente' in df_alimenti_tutti.columns:
-controllo_esiste = df_alimenti_tutti[(df_alimenti_tutti['Nome'].str.lower() == nuovo_nome.lower()) & (df_alimenti_tutti['Utente'] == st.session_state.utente)]
-if not controllo_esiste.empty:                                  
-st.error("Questo alimento esiste già nella tua dispensa!")
-st.stop()
-else:
-st.warning(f"Nota: Impossibile verificare i duplicati. Le colonne trovate sono: {df_alimenti_tutti.columns.tolist()}")
-                "Unita": nuova_unita,
-                "Kcal": nuovo_kcal,
-                "Proteine": nuovo_pro,
-                "Carbo": nuovo_carbo,
-                "Grassi": nuovo_grassi,
-                "Zuccheri": nuovo_zuccheri
-            }])
-            df_alimenti_aggiornato = pd.concat([df_alimenti_tutti, nuovo_cibo], ignore_index=True)
-            conn.update(spreadsheet=URL_FOGLIO, worksheet="Alimenti", data=df_alimenti_aggiornato)
-            st.success(f"'{nuovo_nome}' salvato per sempre nella tua dispensa!")
-            st.rerun()
+        # Controllo di sicurezza per le colonne
+        if 'Nome' in df_alimenti_tutti.columns and 'Utente' in df_alimenti_tutti.columns:
+            controllo_esiste = df_alimenti_tutti[(df_alimenti_tutti['Nome'].str.lower() == nuovo_nome.lower()) & (df_alimenti_tutti['Utente'] == st.session_state.utente)]
+            if not controllo_esiste.empty:
+                st.error("Questo alimento esiste già nella tua dispensa!")
+                st.stop()
+        else:
+            st.warning(f"Nota: Impossibile verificare i duplicati. Le colonne trovate nel file sono: {df_alimenti_tutti.columns.tolist()}")
+        
+        # Creazione del nuovo cibo da salvare
+        nuovo_cibo = pd.DataFrame([{
+            "Utente": st.session_state.utente,
+            "Nome": nuovo_nome,
+            "Unita": nuova_unita,
+            "Kcal": nuovo_kcal,
+            "Proteine": nuovo_pro,
+            "Carbo": nuovo_carbo,
+            "Grassi": nuovo_grassi,
+            "Zuccheri": nuovo_zuccheri
+        }])
+        
+        df_alimenti_aggiornato = pd.concat([df_alimenti_tutti, nuovo_cibo], ignore_index=True)
+        conn.update(spreadsheet=URL_FOGLIO, worksheet="Alimenti", data=df_alimenti_aggiornato)
+        st.success(f"'{nuovo_nome}' salvato per sempre nella tua dispensa!")
+        st.rerun()
     else:
         st.error("Inserisci un nome valido per l'alimento.")
 
