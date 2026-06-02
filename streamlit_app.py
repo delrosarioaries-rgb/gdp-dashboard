@@ -163,13 +163,19 @@ with c2:
 
 if st.button("Salva alimento in dispensa"):
     if nuovo_nome:
-        controllo_esiste = df_alimenti_tutti[(df_alimenti_tutti['Nome'].str.lower() == nuovo_nome.lower()) & (df_alimenti_tutti['Utente'] == st.session_state.utente)]
-        if not controllo_esiste.empty:
-            st.error("Questo alimento esiste già nella tua dispensa!")
-        else:
+        controllo_esiste = 
             nuovo_cibo = pd.DataFrame([{
                 "Utente": st.session_state.utente,
-                "Nome": nuovo_nome,
+if st.button("Salva alimento in dispensa"):                             
+if nuovo_nome:                                               
+# Controllo di sicurezza per non far crashare l'app
+if 'Nome' in df_alimenti_tutti.columns and 'Utente' in df_alimenti_tutti.columns:
+controllo_esiste = df_alimenti_tutti[(df_alimenti_tutti['Nome'].str.lower() == nuovo_nome.lower()) & (df_alimenti_tutti['Utente'] == st.session_state.utente)]
+if not controllo_esiste.empty:                                  
+st.error("Questo alimento esiste già nella tua dispensa!")
+st.stop()
+else:
+st.warning(f"Nota: Impossibile verificare i duplicati. Le colonne trovate sono: {df_alimenti_tutti.columns.tolist()}")
                 "Unita": nuova_unita,
                 "Kcal": nuovo_kcal,
                 "Proteine": nuovo_pro,
